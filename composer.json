@@ -1,13 +1,20 @@
 {
-    "name": "plastoria/rest_client",
+    "name": "plastoria/api-rest",
+    "type":"library",
     "description": "Plastoria rest client",
+    "keywords":["plastoria","rest","api"],
+    "licence":"MIT",
     "minimum-stability": "dev",
     "authors": [
         {
             "name": "Christian Baune",
-            "email": "cbaune@plastoria.be"
+            "email": "cbaune@plastoria.be",
+            "role":"Developer"
         }
     ],
+    "require":{
+        "ext-curl":"*"
+    },
     "autoload":{
         "psr-0":{"Plastoria\\":"src/"}
     }
