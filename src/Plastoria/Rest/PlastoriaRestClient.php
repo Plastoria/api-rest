@@ -16,6 +16,7 @@ namespace Plastoria\Rest;
  * $client
  *      ->setLogin('your_plastoria@login.xx')
  *      ->setPassword('XXXX')
+ *      ->setApiKey('XXXX')
  *      ->setLocale('EN')
  *      ->setEndPoint('http://api.plastoria.com/api/1.0');
  * </code>
@@ -26,6 +27,7 @@ class PlastoriaRestClient {
     private $password;
     private $endPoint;
     private $locale;
+    private $apiKey;
 
     /**
      * Change local used for querying "labels"
@@ -54,6 +56,11 @@ class PlastoriaRestClient {
      */
     public function setPassword($password){
         $this->password=md5($password);
+        return $this;
+    }
+
+    public function setApiKey($apiKey){
+        $this->apiKey=$apiKey;
         return $this;
     }
 
@@ -121,7 +128,7 @@ class PlastoriaRestClient {
                 break;
         }
         echo $this->getWSSEHeader();
-        curl_setopt($ch,CURLOPT_HTTPHEADER,array('Content-type: application/json;charset=UTF-8',$this->getWSSEHeader()));
+        curl_setopt($ch,CURLOPT_HTTPHEADER,array('Content-type: application/json;charset=UTF-8',$this->getWSSEHeader(),'API-KEY: '.$this->apiKey));
         $content=curl_exec($ch);
         $httpCode=curl_getinfo($ch,CURLINFO_HTTP_CODE);
         curl_close($ch);
