@@ -1,0 +1,14 @@
+{
+    "name": "plastoria/rest_client",
+    "description": "Plastoria rest client",
+    "minimum-stability": "dev",
+    "authors": [
+        {
+            "name": "Christian Baune",
+            "email": "cbaune@plastoria.be"
+        }
+    ],
+    "autoload":{
+        "psr-0":{"Plastoria\\":"src/"}
+    }
+}
