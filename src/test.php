@@ -13,10 +13,12 @@ use Plastoria\Rest\PlastoriaRestClient;
 
 $client=new PlastoriaRestClient();
 $client
-    ->setLogin('xxxx@xxxx.xx')
-    ->setPassword('xxxxxxxx')
+    ->setLogin('xxx@xxx.xx')
+    ->setPassword('xxxx')
+    ->setApiKey('xxxx')
     ->setLocale('EN')
-    ->setEndPoint('http://api.plastoria.com/api/1.0');
+    //->setEndPoint('http://pla-ubuntu01.intranet.plastoria.be/api/1.0');
+    ->setEndPoint('http://api-dev.plastoria.com/api/1.0');
 
 //$resp=$client->dropShipOrder(
 //    array(
@@ -45,7 +47,7 @@ $client
 
 //$client->dropShipConfirmOrder('xxxxxxxxxxxxxxxxxxxxxxxx');
 
-//print_r($client->getProducts(array('count'=>1)));
+print_r($client->getProducts(array('count'=>1)));
 //print_r($client->getProductPrice('NS5554 N'));
 //print_r($client->getProductsInventory());
 //print_r($client->getProductAvailableOptions('NS5554 N'));
