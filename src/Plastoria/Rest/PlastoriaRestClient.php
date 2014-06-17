@@ -156,6 +156,16 @@ class PlastoriaRestClient {
     }
 
     /**
+     * @param $size
+     * @param $imageName
+     * @return string
+     */
+    public function getImagePath($size,$imageName)
+    {
+        return  "http://thepowerofbrands-static.s3-eu-west-1.amazonaws.com/static/images/white/$size/$imageName.jpg";
+    }
+
+    /**
      * Retrieves client list of products codes
      * @param null|array $filters Map of key values. Some keys may accept arrays as value
      * @return array list of products codes
