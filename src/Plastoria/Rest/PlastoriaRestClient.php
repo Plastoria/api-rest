@@ -117,6 +117,7 @@ class PlastoriaRestClient {
         }
         echo 'Query on '.$finalUri."\n";
         $ch=curl_init($finalUri);
+        curl_setopt($ch,CURLOPT_VERBOSE,1);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
         switch($method){
             case 'POST':
@@ -142,6 +143,25 @@ class PlastoriaRestClient {
      */
     public function getProducts($filters=null){
         return $this->doRequest(null,'/products/'.urlencode($this->locale),'GET',$filters);
+    }
+
+    /**
+     * Retrieves list of product images
+     * @param $productCode string product code
+     * @param array $getParams
+     * @return array list of products codes
+     */
+    public function getProductImages($productCode,$getParams=array()){
+        return $this->doRequest(null,'/products/'.urlencode($productCode).'/images','GET',$getParams);
+    }
+
+    /**
+     * Retrieves client list of products codes
+     * @param null|array $filters Map of key values. Some keys may accept arrays as value
+     * @return array list of products codes
+     */
+    public function getProductsCodes($filters=null){
+        return $this->doRequest(null,'/products/code','GET',$filters);
     }
 
     /**

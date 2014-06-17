@@ -11,6 +11,8 @@ include_once __DIR__.'/../vendor/autoload.php';
 
 use Plastoria\Rest\PlastoriaRestClient;
 
+date_default_timezone_set('UTC');
+
 $client=new PlastoriaRestClient();
 $client
     ->setLogin('xxx@xxx.be')
@@ -49,6 +51,6 @@ $client
 
 //print_r($client->getProducts(array('count'=>1)));
 //print_r($client->getProductPrice('NS5554 N'));
-print_r($client->getProductsInventory());
+echo(json_encode($client->getProductImages('CMN474',array('XDEBUG_SESSION_START'=>'INTELLIJ'))));
 //print_r($client->getProductAvailableOptions('NS5554 N'));
 //print_r($client->getProductTechnicalData('NS5554 N'));
