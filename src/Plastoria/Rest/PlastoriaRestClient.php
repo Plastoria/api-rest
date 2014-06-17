@@ -198,7 +198,7 @@ class PlastoriaRestClient {
      * @return array
      */
     public function getProductAvailableOptions($productCode){
-        return $this->doRequest(null,'/products/'.rawurlencode($productCode).'/'.urlencode($this->locale));
+        return $this->doRequest(null,'/products/'.rawurlencode($productCode).'/'.urlencode($this->locale).'/available-options');
     }
 
     /**
