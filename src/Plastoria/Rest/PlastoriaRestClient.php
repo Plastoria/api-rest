@@ -92,15 +92,8 @@ class PlastoriaRestClient {
         return $header;
     }
 
-    /**
-     * Call ANY method, low level API
-     * @param array $requestArray content as PHP array
-     * @param string $path  path to append to end point, shown first in documentation
-     * @param string $method One of 'GET','POST', 'PUT', 'DELETE', ...
-     * @param null|string $getParams
-     * @return array
-     */
-    public function doRequest($requestArray,$path,$method='GET',$getParams=null){
+    private function doRequestInternal($requestArray,$path,$method='GET',$getParams=null,$retry=false)
+    {
         $finalUri=$this->endPoint.$path;
         if(isset($getParams) && is_array($getParams)){
             $qStringArray=array();
@@ -133,7 +126,30 @@ class PlastoriaRestClient {
         $content=curl_exec($ch);
         $httpCode=curl_getinfo($ch,CURLINFO_HTTP_CODE);
         curl_close($ch);
-        return array('data'=>json_decode($content,true),'status'=>$httpCode);
+        $data=json_decode($content,true);
+
+        if($httpCode==401)
+        {
+            if($retry && isset($data['data']))
+            {
+                return $this->doRequestInternal($requestArray,$path,$method,$getParams,false);
+            }
+
+        }
+
+        return array('data'=>$data,'status'=>$httpCode);
+    }
+
+    /**
+     * Call ANY method, low level API
+     * @param array $requestArray content as PHP array
+     * @param string $path  path to append to end point, shown first in documentation
+     * @param string $method One of 'GET','POST', 'PUT', 'DELETE', ...
+     * @param null|string $getParams
+     * @return array
+     */
+    public function doRequest($requestArray,$path,$method='GET',$getParams=null){
+        return $this->doRequestInternal($requestArray,$path,$method,$getParams,true);
     }
 
     /**
