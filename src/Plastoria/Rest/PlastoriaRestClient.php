@@ -82,17 +82,22 @@ class PlastoriaRestClient {
 
     /**
      * Generate a one use WSSHeader. Use this to use unimplemented methods.
+     * @param null $date
      * @return string
      */
-    public function getWSSEHeader(){
-        $created=date('c');
+    public function getWSSEHeader($date=null){
+        if($date==null) {
+            $created = date('c');
+        }else{
+            $created=$date;
+        }
         $nonce=uniqid();
         $secret=base64_encode(sha1($nonce.$created.$this->password, true));
         $header='x-wsse: UsernameToken Username="'.$this->userName.'", PasswordDigest="'.$secret.'", Created="'.$created.'", Nonce="'.base64_encode($nonce).'"';
         return $header;
     }
 
-    private function doRequestInternal($requestArray,$path,$method='GET',$getParams=null,$retry=false)
+    private function doRequestInternal($requestArray,$path,$method='GET',$getParams=null,$retry=false,$forcedDate=null)
     {
         $finalUri=$this->endPoint.$path;
         if(isset($getParams) && is_array($getParams)){
@@ -122,7 +127,7 @@ class PlastoriaRestClient {
                 break;
         }
         echo $this->getWSSEHeader();
-        curl_setopt($ch,CURLOPT_HTTPHEADER,array('Content-type: application/json;charset=UTF-8',$this->getWSSEHeader(),'API-KEY: '.$this->apiKey));
+        curl_setopt($ch,CURLOPT_HTTPHEADER,array('Content-type: application/json;charset=UTF-8',$this->getWSSEHeader($forcedDate),'API-KEY: '.$this->apiKey));
         $content=curl_exec($ch);
         $httpCode=curl_getinfo($ch,CURLINFO_HTTP_CODE);
         curl_close($ch);
@@ -130,9 +135,9 @@ class PlastoriaRestClient {
 
         if($httpCode==401)
         {
-            if($retry && isset($data['data']))
+            if($retry && isset($data['date']))
             {
-                return $this->doRequestInternal($requestArray,$path,$method,$getParams,false);
+                return $this->doRequestInternal($requestArray,$path,$method,$getParams,false,$data['date']);
             }
 
         }
